@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "fake_detector"        # اسم الحزمة اللي تحب يظهر بدل UNKNOWN
+name = "fake_detector"     
 version = "0.1.0"
 description = "Twitter fake vs genuine account detector"
 authors = [{name = "Ramez Fawzy"}]
