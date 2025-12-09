@@ -5,7 +5,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../src'))
 
 from feature_engineer import FeatureEngineer
 
-# بيانات تجريبية
+# Sample data
 data = pd.DataFrame([
     {
         'statuses_count': 100, 'followers_count': 10, 'friends_count': 20,
@@ -25,7 +25,7 @@ fe = FeatureEngineer()
 fe.fit(data)
 X_transformed = fe.transform(data)
 
-# طباعة الأعمدة والقيم
+# Print columns and values
 feature_names = [
     'statuses_count','followers_count','friends_count','favourites_count','listed_count',
     'sex_code','lang_code','tweets_per_day','account_age_days','description_length',
