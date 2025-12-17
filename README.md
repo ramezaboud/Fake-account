@@ -247,7 +247,6 @@ pip install -r requirements.txt
 Start the FastAPI app from repository root:
 
 ```powershell
-Set-Location -Path "D:\university\project grad\ml project 2"
 uvicorn app.api:app --host 127.0.0.1 --port 8001
 ```
 
