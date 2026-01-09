@@ -1,95 +1,401 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
+# Byte-compiled / optimized / DLL files# Byte-compiled / optimized / DLL files
+
+__pycache__/__pycache__/
+
+*.py[cod]<<<<<<< HEAD
+
+*$py.class*.py[cod]
+
+=======
+
+# C extensions*.py[codz]
+
+*.so>>>>>>> 2ae8afa1f999952ff9a5cba28d4cef27a0e55f53
+
 *$py.class
 
-# C extensions
-*.so
-
 # Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
 
-# PyInstaller
-*.manifest
+.Python# C extensions
+
+build/*.so
+
+develop-eggs/
+
+dist/# Distribution / packaging
+
+downloads/.Python
+
+eggs/build/
+
+.eggs/develop-eggs/
+
+lib/dist/
+
+lib64/downloads/
+
+parts/eggs/
+
+sdist/.eggs/
+
+var/lib/
+
+wheels/lib64/
+
+share/python-wheels/parts/
+
+*.egg-info/sdist/
+
+.installed.cfgvar/
+
+*.eggwheels/
+
+MANIFEST<<<<<<< HEAD
+
+*.egg-info/
+
+# PyInstaller.installed.cfg
+
+*.manifest*.egg
+
 *.spec
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+# PyInstaller
+
+# Installer logs=======
+
+pip-log.txtshare/python-wheels/
+
+pip-delete-this-directory.txt*.egg-info/
+
+.installed.cfg
+
+# Unit test / coverage reports*.egg
+
+htmlcov/MANIFEST
+
+.tox/
+
+.nox/# PyInstaller
+
+.coverage#  Usually these files are written by a python script from a template
+
+.coverage.*#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+
+.cache>>>>>>> 2ae8afa1f999952ff9a5cba28d4cef27a0e55f53
+
+nosetests.xml*.manifest
+
+coverage.xml*.spec
+
+*.cover
+
+*.py,cover# Installer logs
+
+.hypothesis/pip-log.txt
+
+.pytest_cache/pip-delete-this-directory.txt
+
+cover/
 
 # Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
+
+# Translationshtmlcov/
+
+*.mo.tox/
+
+*.pot.nox/
+
 .coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
+
+# Django stuff:.coverage.*
+
+*.log.cache
+
+local_settings.pynosetests.xml
+
+db.sqlite3coverage.xml
+
+db.sqlite3-journal*.cover
+
+<<<<<<< HEAD
+
+# Flask stuff:*.py,cover
+
+instance/.hypothesis/
+
+.webassets-cache.pytest_cache/
+
+=======
+
+# Scrapy stuff:*.py.cover
+
+.scrapy.hypothesis/
+
 .pytest_cache/
 
-# Translations
-*.mo
-*.pot
+# Sphinx documentationcover/
 
-# Jupyter Notebook
+docs/_build/>>>>>>> 2ae8afa1f999952ff9a5cba28d4cef27a0e55f53
+
+
+
+# PyBuilder# Translations
+
+.pybuilder/*.mo
+
+target/*.pot
+
+
+
+# Jupyter Notebook<<<<<<< HEAD
+
+.ipynb_checkpoints/# Jupyter Notebook
+
 .ipynb_checkpoints/
 
+# IPython=======
+
+profile_default/# Django stuff:
+
+ipython_config.py*.log
+
+local_settings.py
+
+# pyenvdb.sqlite3
+
+.python-versiondb.sqlite3-journal
+
+
+
+# pipenv# Flask stuff:
+
+#Pipfile.lockinstance/
+
+.webassets-cache
+
+# UV
+
+#uv.lock# Scrapy stuff:
+
+.scrapy
+
+# poetry
+
+#poetry.lock# Sphinx documentation
+
+#poetry.tomldocs/_build/
+
+
+
+# pdm# PyBuilder
+
+#pdm.lock.pybuilder/
+
+#pdm.tomltarget/
+
+.pdm-python
+
+.pdm-build/# Jupyter Notebook
+
+.ipynb_checkpoints
+
+# pixi>>>>>>> 2ae8afa1f999952ff9a5cba28d4cef27a0e55f53
+
+.pixi
+
 # IPython
-profile_default/
-ipython_config.py
 
-# pyenv
-.python-version
+# PEP 582profile_default/
 
-# Environments
-.env
+__pypackages__/ipython_config.py
+
+
+
+# Celery stuff# pyenv
+
+celerybeat-schedule<<<<<<< HEAD
+
+celerybeat.pid.python-version
+
+
+
+# SageMath parsed files# Environments
+
+*.sage.py.env
+
 .venv/
+
+# Environments=======
+
+.env#   For a library or package, you might want to ignore these files since the code is
+
+.envrc#   intended to run in multiple environments; otherwise, check them in:
+
+.venv/# .python-version
+
 env/
-venv/
-ENV/
-env.bak/
-venv.bak/
 
-# Spyder project settings
+venv/# pipenv
+
+ENV/#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
+
+env.bak/#   However, in case of collaboration, if having platform-specific dependencies or dependencies
+
+venv.bak/#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+
+#   install all needed dependencies.
+
+# Spyder project settings#Pipfile.lock
+
 .spyderproject
-.spyproject
 
-# Rope project settings
-.ropeproject
+.spyproject# UV
+
+#   Similar to Pipfile.lock, it is generally recommended to include uv.lock in version control.
+
+# Rope project settings#   This is especially recommended for binary packages to ensure reproducibility, and is more
+
+.ropeproject#   commonly ignored for libraries.
+
+#uv.lock
+
+# mkdocs documentation
+
+/site# poetry
+
+#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
+
+# mypy#   This is especially recommended for binary packages to ensure reproducibility, and is more
+
+.mypy_cache/#   commonly ignored for libraries.
+
+.dmypy.json#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
+
+dmypy.json#poetry.lock
+
+#poetry.toml
+
+# Pyre type checker
+
+.pyre/# pdm
+
+#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
+
+# pytype static type analyzer#   pdm recommends including project-wide configuration in pdm.toml, but excluding .pdm-python.
+
+.pytype/#   https://pdm-project.org/en/latest/usage/project/#working-with-version-control
+
+#pdm.lock
+
+# Cython debug symbols#pdm.toml
+
+cython_debug/.pdm-python
+
+.pdm-build/
 
 # VS Code
-.vscode/
-*.code-workspace
 
-# PyCharm
-.idea/
+.vscode/# pixi
 
-# Data files (large files - keep structure but ignore data)
-data/*.csv
-!data/.gitkeep
+*.code-workspace#   Similar to Pipfile.lock, it is generally recommended to include pixi.lock in version control.
+
+#pixi.lock
+
+# PyCharm / JetBrains#   Pixi creates a virtual environment in the .pixi directory, just like venv module creates one
+
+.idea/#   in the .venv directory. It is recommended not to include this directory in version control.
+
+.pixi
+
+# Abstra
+
+.abstra/# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
+
+__pypackages__/
+
+# Ruff
+
+.ruff_cache/# Celery stuff
+
+celerybeat-schedule
+
+# PyPI configurationcelerybeat.pid
+
+.pypirc
+
+# SageMath parsed files
+
+# Cursor*.sage.py
+
+.cursorignore
+
+.cursorindexingignore# Environments
+
+.env
+
+# Marimo.envrc
+
+marimo/_static/.venv
+
+marimo/_lsp/>>>>>>> 2ae8afa1f999952ff9a5cba28d4cef27a0e55f53
+
+__marimo__/env/
+
+venv/
+
+# Data files (large files - keep structure but ignore data)ENV/
+
+data/*.csvenv.bak/
+
+!data/.gitkeepvenv.bak/
+
 !data/labeled_dataset_new.csv
 
-# Model files (large binary files)
-models/*.joblib
+# Spyder project settings
+
+# Model files (large binary files).spyderproject
+
+models/*.joblib.spyproject
+
+models/*.pkl
+
+models/*.h5# Rope project settings
+
+models/*.json.ropeproject
+
+models/*.csv
+
+!models/.gitkeep<<<<<<< HEAD
+
+# VS Code
+
+# Logs.vscode/
+
+logs/*.code-workspace
+
+*.log
+
+# PyCharm
+
+# OS files.idea/
+
+.DS_Store
+
+Thumbs.db# Data files (large files - keep structure but ignore data)
+
+data/*.csv
+
+# Temporary files!data/.gitkeep
+
+*.tmp!data/labeled_dataset_new.csv
+
+*.temp
+
+*.swp# Model files (large binary files)
+
+*~models/*.joblib
+
 models/*.pkl
 models/*.h5
 models/*.json
@@ -109,3 +415,59 @@ Thumbs.db
 *.temp
 *.swp
 *~
+=======
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# PyCharm
+#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
+#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+#  and can be added to the global gitignore or merged into this file.  For a more nuclear
+#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
+#.idea/
+
+# Abstra
+# Abstra is an AI-powered process automation framework.
+# Ignore directories containing user credentials, local state, and settings.
+# Learn more at https://abstra.io/docs
+.abstra/
+
+# Visual Studio Code
+#  Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore 
+#  that can be found at https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
+#  and can be added to the global gitignore or merged into this file. However, if you prefer, 
+#  you could uncomment the following to ignore the entire vscode folder
+# .vscode/
+
+# Ruff stuff:
+.ruff_cache/
+
+# PyPI configuration file
+.pypirc
+
+# Cursor
+#  Cursor is an AI-powered code editor. `.cursorignore` specifies files/directories to
+#  exclude from AI features like autocomplete and code analysis. Recommended for sensitive data
+#  refer to https://docs.cursor.com/context/ignore-files
+.cursorignore
+.cursorindexingignore
+
+# Marimo
+marimo/_static/
+marimo/_lsp/
+__marimo__/
+>>>>>>> 2ae8afa1f999952ff9a5cba28d4cef27a0e55f53
