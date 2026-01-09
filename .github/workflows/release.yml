@@ -40,7 +40,7 @@ jobs:
 
       - name: 🎉 Create GitHub Release
         id: create_release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ github.ref_name }}
           body: |
@@ -91,7 +91,7 @@ jobs:
         run: twine check dist/*
 
       - name: 📤 Upload release assets
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             dist/*.whl
