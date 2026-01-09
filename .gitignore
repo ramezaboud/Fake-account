@@ -1,164 +1,325 @@
-# Byte-compiled / optimized / DLL files# Byte-compiled / optimized / DLL files
+# Byte-compiled / optimized / DLL files# Byte-compiled / optimized / DLL files# Byte-compiled / optimized / DLL files
 
-__pycache__/__pycache__/
+__pycache__/
 
-*.py[cod]<<<<<<< HEAD
-
-*$py.class*.py[cod]
-
-=======
-
-# C extensions*.py[codz]
-
-*.so>>>>>>> 2ae8afa1f999952ff9a5cba28d4cef27a0e55f53
+*.py[cod]__pycache__/__pycache__/
 
 *$py.class
 
-# Distribution / packaging
+*.py[cod]<<<<<<< HEAD
 
-.Python# C extensions
+# C extensions
 
-build/*.so
+*.so*$py.class*.py[cod]
+
+
+
+# Distribution / packaging=======
+
+.Python
+
+build/# C extensions*.py[codz]
 
 develop-eggs/
 
-dist/# Distribution / packaging
+dist/*.so>>>>>>> 2ae8afa1f999952ff9a5cba28d4cef27a0e55f53
 
-downloads/.Python
+downloads/
 
-eggs/build/
+eggs/*$py.class
 
-.eggs/develop-eggs/
+.eggs/
 
-lib/dist/
+lib/# Distribution / packaging
 
-lib64/downloads/
+lib64/
 
-parts/eggs/
+parts/.Python# C extensions
 
-sdist/.eggs/
+sdist/
 
-var/lib/
+var/build/*.so
 
-wheels/lib64/
+wheels/
 
-share/python-wheels/parts/
-
-*.egg-info/sdist/
-
-.installed.cfgvar/
-
-*.eggwheels/
-
-MANIFEST<<<<<<< HEAD
+share/python-wheels/develop-eggs/
 
 *.egg-info/
 
-# PyInstaller.installed.cfg
+.installed.cfgdist/# Distribution / packaging
 
-*.manifest*.egg
+*.egg
 
-*.spec
+MANIFESTdownloads/.Python
 
-# PyInstaller
 
-# Installer logs=======
 
-pip-log.txtshare/python-wheels/
+# PyInstallereggs/build/
 
-pip-delete-this-directory.txt*.egg-info/
+*.manifest
 
-.installed.cfg
+*.spec.eggs/develop-eggs/
 
-# Unit test / coverage reports*.egg
 
-htmlcov/MANIFEST
 
-.tox/
+# Installer logslib/dist/
 
-.nox/# PyInstaller
+pip-log.txt
 
-.coverage#  Usually these files are written by a python script from a template
+pip-delete-this-directory.txtlib64/downloads/
 
-.coverage.*#  before PyInstaller builds the exe, so as to inject date/other infos into it.
 
-.cache>>>>>>> 2ae8afa1f999952ff9a5cba28d4cef27a0e55f53
 
-nosetests.xml*.manifest
+# Unit test / coverage reportsparts/eggs/
 
-coverage.xml*.spec
+htmlcov/
+
+.tox/sdist/.eggs/
+
+.nox/
+
+.coveragevar/lib/
+
+.coverage.*
+
+.cachewheels/lib64/
+
+nosetests.xml
+
+coverage.xmlshare/python-wheels/parts/
 
 *.cover
 
-*.py,cover# Installer logs
+*.py,cover*.egg-info/sdist/
 
-.hypothesis/pip-log.txt
+.hypothesis/
 
-.pytest_cache/pip-delete-this-directory.txt
+.pytest_cache/.installed.cfgvar/
 
 cover/
 
-# Unit test / coverage reports
+*.eggwheels/
 
-# Translationshtmlcov/
+# Translations
 
-*.mo.tox/
+*.moMANIFEST<<<<<<< HEAD
 
-*.pot.nox/
+*.pot
 
-.coverage
+*.egg-info/
 
-# Django stuff:.coverage.*
+# Django stuff:
 
-*.log.cache
+local_settings.py# PyInstaller.installed.cfg
 
-local_settings.pynosetests.xml
+db.sqlite3
 
-db.sqlite3coverage.xml
-
-db.sqlite3-journal*.cover
-
-<<<<<<< HEAD
-
-# Flask stuff:*.py,cover
-
-instance/.hypothesis/
-
-.webassets-cache.pytest_cache/
-
-=======
-
-# Scrapy stuff:*.py.cover
-
-.scrapy.hypothesis/
-
-.pytest_cache/
-
-# Sphinx documentationcover/
-
-docs/_build/>>>>>>> 2ae8afa1f999952ff9a5cba28d4cef27a0e55f53
+db.sqlite3-journal*.manifest*.egg
 
 
 
-# PyBuilder# Translations
+# Flask stuff:*.spec
 
-.pybuilder/*.mo
+instance/
 
-target/*.pot
+.webassets-cache# PyInstaller
 
 
 
-# Jupyter Notebook<<<<<<< HEAD
+# Scrapy stuff:# Installer logs=======
 
-.ipynb_checkpoints/# Jupyter Notebook
+.scrapy
+
+pip-log.txtshare/python-wheels/
+
+# Sphinx documentation
+
+docs/_build/pip-delete-this-directory.txt*.egg-info/
+
+
+
+# PyBuilder.installed.cfg
+
+.pybuilder/
+
+target/# Unit test / coverage reports*.egg
+
+
+
+# Jupyter Notebookhtmlcov/MANIFEST
 
 .ipynb_checkpoints/
 
-# IPython=======
+.tox/
 
-profile_default/# Django stuff:
+# IPython
 
-ipython_config.py*.log
+profile_default/.nox/# PyInstaller
+
+ipython_config.py
+
+.coverage#  Usually these files are written by a python script from a template
+
+# pyenv
+
+.python-version.coverage.*#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+
+
+
+# Environments.cache>>>>>>> 2ae8afa1f999952ff9a5cba28d4cef27a0e55f53
+
+.env
+
+.envrcnosetests.xml*.manifest
+
+.venv/
+
+env/coverage.xml*.spec
+
+venv/
+
+ENV/*.cover
+
+env.bak/
+
+venv.bak/*.py,cover# Installer logs
+
+
+
+# Spyder project settings.hypothesis/pip-log.txt
+
+.spyderproject
+
+.spyproject.pytest_cache/pip-delete-this-directory.txt
+
+
+
+# Rope project settingscover/
+
+.ropeproject
+
+# Unit test / coverage reports
+
+# mkdocs documentation
+
+/site# Translationshtmlcov/
+
+
+
+# mypy*.mo.tox/
+
+.mypy_cache/
+
+.dmypy.json*.pot.nox/
+
+dmypy.json
+
+.coverage
+
+# Pyre type checker
+
+.pyre/# Django stuff:.coverage.*
+
+
+
+# pytype static type analyzer*.log.cache
+
+.pytype/
+
+local_settings.pynosetests.xml
+
+# Cython debug symbols
+
+cython_debug/db.sqlite3coverage.xml
+
+
+
+# VS Codedb.sqlite3-journal*.cover
+
+.vscode/
+
+*.code-workspace<<<<<<< HEAD
+
+
+
+# PyCharm / JetBrains# Flask stuff:*.py,cover
+
+.idea/
+
+instance/.hypothesis/
+
+# Ruff
+
+.ruff_cache/.webassets-cache.pytest_cache/
+
+
+
+# PyPI configuration=======
+
+.pypirc
+
+# Scrapy stuff:*.py.cover
+
+# Cursor
+
+.cursorignore.scrapy.hypothesis/
+
+.cursorindexingignore
+
+.pytest_cache/
+
+# Data files (large files - keep structure but ignore data)
+
+data/*.csv# Sphinx documentationcover/
+
+!data/.gitkeep
+
+!data/labeled_dataset_new.csvdocs/_build/>>>>>>> 2ae8afa1f999952ff9a5cba28d4cef27a0e55f53
+
+
+
+# Model files (large binary files)
+
+models/*.joblib
+
+models/*.pkl# PyBuilder# Translations
+
+models/*.h5
+
+models/*.json.pybuilder/*.mo
+
+models/*.csv
+
+!models/.gitkeeptarget/*.pot
+
+
+
+# Logs
+
+logs/
+
+*.log# Jupyter Notebook<<<<<<< HEAD
+
+
+
+# OS files.ipynb_checkpoints/# Jupyter Notebook
+
+.DS_Store
+
+Thumbs.db.ipynb_checkpoints/
+
+
+
+# Temporary files# IPython=======
+
+*.tmp
+
+*.tempprofile_default/# Django stuff:
+
+*.swp
+
+*~ipython_config.py*.log
+
 
 local_settings.py
 
