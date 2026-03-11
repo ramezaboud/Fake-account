@@ -2,7 +2,7 @@
 FastAPI application for Fake Account Detection.
 
 This API provides endpoints for predicting whether social media accounts
-are fake or genuine using a trained Random Forest model.
+are fake or Real using a trained Random Forest model.
 
 Run with: uvicorn app.api:app --reload --port 8000
 """
@@ -124,7 +124,7 @@ def user_to_dataframe(user: UserProfile) -> pd.DataFrame:
 
 @app.post("/predict", response_model=PredictionResponse, tags=["Prediction"])
 async def predict(request: PredictionRequest, decision_threshold: float = Query(0.445, ge=0.0, le=1.0, description="Decision threshold for classifying as fake (probability >= threshold)")):
-    """Predict if a single user account is fake or genuine."""
+    """Predict if a single user account is fake or Real."""
     if model is None:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -139,8 +139,8 @@ async def predict(request: PredictionRequest, decision_threshold: float = Query(
         p_fake = float(probas[1])
         prediction = 1 if p_fake >= decision_threshold else 0
 
-        # Note: In the dataset, label 0 = genuine/real, label 1 = fake
-        label = "fake" if prediction == 1 else "genuine"
+        # Note: In the dataset, label 0 = Real/real, label 1 = fake
+        label = "fake" if prediction == 1 else "Real"
         confidence = float(max(probas))
 
         return PredictionResponse(
@@ -148,7 +148,7 @@ async def predict(request: PredictionRequest, decision_threshold: float = Query(
             label=label,
             confidence=confidence,
             probabilities={
-                "genuine": float(probas[0]),  # probability of class 0 (genuine)
+                "Real": float(probas[0]),  # probability of class 0 (Real)
                 "fake": float(probas[1])      # probability of class 1 (fake)
             }
         )
@@ -162,7 +162,7 @@ async def predict(request: PredictionRequest, decision_threshold: float = Query(
 
 @app.post("/predict/batch", response_model=BatchPredictionResponse, tags=["Prediction"])
 async def predict_batch(request: BatchPredictionRequest, decision_threshold: float = Query(0.445, ge=0.0, le=1.0, description="Decision threshold for classifying as fake (probability >= threshold)")):
-    """Predict if multiple user accounts are fake or genuine."""
+    """Predict if multiple user accounts are fake or Real."""
     if model is None:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -180,7 +180,7 @@ async def predict_batch(request: BatchPredictionRequest, decision_threshold: flo
             p_fake = float(probas[1])
             pred = 1 if p_fake >= decision_threshold else 0
 
-            label = "fake" if pred == 1 else "genuine"
+            label = "fake" if pred == 1 else "Real"
             confidence = float(max(probas))
 
             predictions.append(PredictionResponse(
@@ -188,7 +188,7 @@ async def predict_batch(request: BatchPredictionRequest, decision_threshold: flo
                 label=label,
                 confidence=confidence,
                 probabilities={
-                    "genuine": float(probas[0]),
+                    "Real": float(probas[0]),
                     "fake": float(probas[1])
                 }
             ))
