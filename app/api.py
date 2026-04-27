@@ -144,13 +144,8 @@ async def predict(request: PredictionRequest, decision_threshold: float = Query(
         confidence = float(max(probas))
 
         return PredictionResponse(
-            prediction=int(prediction),
-            label=label,
-            confidence=confidence,
-            probabilities={
-                "Real": float(probas[0]),  # probability of class 0 (Real)
-                "fake": float(probas[1])      # probability of class 1 (fake)
-            }
+            prediction=label,
+            confidence=round(confidence * 100, 2)
         )
     except Exception as e:
         logger.error(f"Prediction error: {e}")
@@ -184,23 +179,18 @@ async def predict_batch(request: BatchPredictionRequest, decision_threshold: flo
             confidence = float(max(probas))
 
             predictions.append(PredictionResponse(
-                prediction=int(pred),
-                label=label,
-                confidence=confidence,
-                probabilities={
-                    "Real": float(probas[0]),
-                    "fake": float(probas[1])
-                }
+                prediction=label,
+                confidence=round(confidence * 100, 2)
             ))
         
-        fake_count = sum(1 for p in predictions if p.prediction == 1)
-        genuine_count = len(predictions) - fake_count
+        fake_count = sum(1 for p in predictions if p.prediction == "fake")
+        real_count = len(predictions) - fake_count
         
         return BatchPredictionResponse(
             predictions=predictions,
             total=len(predictions),
             fake_count=fake_count,
-            genuine_count=genuine_count
+            real_count=real_count
         )
     except Exception as e:
         logger.error(f"Batch prediction error: {e}")

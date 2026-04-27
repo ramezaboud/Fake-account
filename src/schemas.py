@@ -83,10 +83,8 @@ class PredictionRequest(BaseModel):
 
 class PredictionResponse(BaseModel):
     """Response schema for prediction results."""
-    prediction: int = Field(..., description="0=genuine, 1=fake")
-    label: str = Field(..., description="Human-readable prediction")
-    confidence: float = Field(..., ge=0, le=1, description="Confidence score")
-    probabilities: Dict[str, float] = Field(..., description="Class probabilities")
+    prediction: str = Field(..., description="Human-readable prediction (Real or fake)")
+    confidence: float = Field(..., ge=0, le=100, description="Confidence score as percentage (0-100)")
 
 
 class BatchPredictionRequest(BaseModel):
@@ -99,7 +97,7 @@ class BatchPredictionResponse(BaseModel):
     predictions: List[PredictionResponse] = Field(..., description="List of predictions")
     total: int = Field(..., description="Total number of predictions")
     fake_count: int = Field(..., description="Number of fake accounts detected")
-    genuine_count: int = Field(..., description="Number of genuine accounts")
+    real_count: int = Field(..., description="Number of genuine accounts")
 
 
 class HealthResponse(BaseModel):
