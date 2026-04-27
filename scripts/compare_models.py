@@ -21,7 +21,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import accuracy_score, roc_auc_score, f1_score, classification_report
+from sklearn.metrics import accuracy_score, roc_auc_score, f1_score, precision_score, recall_score, classification_report
 
 # Try importing XGBoost
 try:
@@ -159,6 +159,8 @@ def train_and_evaluate(
     # Metrics
     metrics = {
         'accuracy': accuracy_score(y_test, y_pred),
+        'precision': precision_score(y_test, y_pred, average='weighted'),
+        'recall': recall_score(y_test, y_pred, average='weighted'),
         'f1_score': f1_score(y_test, y_pred, average='weighted'),
         'best_params': gs.best_params_,
         'cv_score': gs.best_score_,
@@ -170,6 +172,8 @@ def train_and_evaluate(
     logger.info(f"\n{model_name} Results:")
     logger.info(f"  Best CV Score: {metrics['cv_score']:.4f}")
     logger.info(f"  Test Accuracy: {metrics['accuracy']:.4f}")
+    logger.info(f"  Precision:     {metrics['precision']:.4f}")
+    logger.info(f"  Recall:        {metrics['recall']:.4f}")
     if 'roc_auc' in metrics:
         logger.info(f"  Test ROC AUC: {metrics['roc_auc']:.4f}")
     logger.info(f"  F1 Score: {metrics['f1_score']:.4f}")
@@ -228,24 +232,29 @@ def compare_models(
     logger.info(f"{'='*50}")
     
     # Create visualizations
-    Path(output_dir).mkdir(parents=True, exist_ok=True)
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
     
-    # Model comparison plots
-    plot_model_comparison(results, metric='accuracy', save_path=output_dir)
-    if all('roc_auc' in r for r in results.values()):
-        plot_model_comparison(results, metric='roc_auc', save_path=output_dir)
+    # Model comparison plot (all metrics together)
+    plot_model_comparison(
+        results,
+        metrics=['accuracy', 'precision', 'recall', 'f1_score', 'roc_auc'],
+        save_path=output_path / 'model_comparison.png'
+    )
     
     # Best model evaluation plots
     y_pred = best_model.predict(X_test)
     y_proba = best_model.predict_proba(X_test)[:, 1]
     
-    plot_confusion_matrix(y_test, y_pred, save_path=output_dir)
-    plot_roc_curve(y_test, y_proba, save_path=output_dir)
-    plot_precision_recall_curve(y_test, y_proba, save_path=output_dir)
+    plot_confusion_matrix(y_test, y_pred, save_path=output_path / 'confusion_matrix.png')
+    plot_roc_curve(y_test, y_proba, save_path=output_path / 'roc_curve.png')
+    plot_precision_recall_curve(y_test, y_proba, save_path=output_path / 'precision_recall_curve.png')
     
     # Feature importance (for tree-based models)
     try:
-        plot_feature_importance(best_model, FEATURE_NAMES, save_path=output_dir)
+        clf = best_model.named_steps['clf']
+        importances = clf.feature_importances_
+        plot_feature_importance(FEATURE_NAMES, importances, save_path=output_path / 'feature_importance.png')
     except Exception as e:
         logger.warning(f"Could not plot feature importance: {e}")
     
@@ -256,16 +265,16 @@ def compare_models(
     logger.info(f"Best model saved to {model_path}")
     
     # Print summary table
-    print("\n" + "="*70)
+    print("\n" + "="*95)
     print("MODEL COMPARISON SUMMARY")
-    print("="*70)
-    print(f"{'Model':<20} {'Accuracy':>12} {'ROC AUC':>12} {'F1 Score':>12}")
-    print("-"*70)
+    print("="*95)
+    print(f"{'Model':<20} {'Accuracy':>12} {'Precision':>12} {'Recall':>12} {'F1 Score':>12} {'ROC AUC':>12}")
+    print("-"*95)
     for name, metrics in results.items():
         roc = metrics.get('roc_auc', 'N/A')
         roc_str = f"{roc:.4f}" if isinstance(roc, float) else roc
-        print(f"{name:<20} {metrics['accuracy']:>12.4f} {roc_str:>12} {metrics['f1_score']:>12.4f}")
-    print("="*70)
+        print(f"{name:<20} {metrics['accuracy']:>12.4f} {metrics['precision']:>12.4f} {metrics['recall']:>12.4f} {metrics['f1_score']:>12.4f} {roc_str:>12}")
+    print("="*95)
     
     return results
 
