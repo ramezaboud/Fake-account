@@ -120,7 +120,7 @@ def plot_confusion_matrix(
     Args:
         y_true: True labels.
         y_pred: Predicted labels.
-        labels: Class labels for display. Defaults to ['Genuine', 'Fake'].
+        labels: Class labels for display. Defaults to ['Real', 'Fake'].
         title: Plot title.
         save_path: Path to save the figure.
         figsize: Figure size.
@@ -133,7 +133,7 @@ def plot_confusion_matrix(
         >>> plot_confusion_matrix(y_test, y_pred, save_path='cm.png')
     """
     if labels is None:
-        labels = ['Genuine (0)', 'Fake (1)']
+        labels = ['Real (0)', 'Fake (1)']
     
     # Compute confusion matrix
     cm = confusion_matrix(y_true, y_pred)
@@ -141,29 +141,32 @@ def plot_confusion_matrix(
     # Create figure
     fig, ax = plt.subplots(figsize=figsize)
     
-    # Plot heatmap
+    # Plot heatmap without annotations first
     sns.heatmap(
         cm, 
-        annot=True, 
-        fmt='d', 
+        annot=False, 
         cmap=cmap,
         xticklabels=labels,
         yticklabels=labels,
         ax=ax,
-        annot_kws={'size': 14}
+        cbar_kws={'label': 'Count'}
     )
+    
+    # Add annotations with counts and percentages
+    total = cm.sum()
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            count = cm[i, j]
+            percentage = count / total * 100
+            text = f'{count}\n({percentage:.1f}%)'
+            # Use white text for dark cells, black text for light cells
+            text_color = 'white' if cm[i, j] > cm.max() / 2 else 'black'
+            ax.text(j + 0.5, i + 0.5, text, ha='center', va='center', 
+                   color=text_color, fontsize=13, fontweight='bold')
     
     ax.set_xlabel('Predicted Label', fontsize=12)
     ax.set_ylabel('True Label', fontsize=12)
     ax.set_title(title, fontsize=14, fontweight='bold')
-    
-    # Add percentages
-    total = cm.sum()
-    for i in range(cm.shape[0]):
-        for j in range(cm.shape[1]):
-            percentage = cm[i, j] / total * 100
-            current_text = ax.texts[i * cm.shape[1] + j]
-            current_text.set_text(f'{cm[i, j]}\n({percentage:.1f}%)')
     
     plt.tight_layout()
     
@@ -517,3 +520,263 @@ def plot_threshold_analysis(
         logger.info(f"Threshold analysis plot saved to {save_path}")
     
     return fig
+
+
+def plot_accuracy_curve(
+    history: Dict[str, List[float]],
+    title: str = "Model Accuracy",
+    save_path: Optional[Union[str, Path]] = None,
+    figsize: Tuple[int, int] = (10, 6)
+) -> plt.Figure:
+    """
+    Plot training and validation accuracy curves.
+    
+    Args:
+        history: Dictionary with 'train_accuracy' and 'val_accuracy' lists.
+        title: Plot title.
+        save_path: Path to save the figure.
+        figsize: Figure size.
+        
+    Returns:
+        matplotlib Figure object.
+        
+    Example:
+        >>> history = {'train_accuracy': [0.8, 0.85, 0.9], 'val_accuracy': [0.78, 0.83, 0.88]}
+        >>> plot_accuracy_curve(history)
+    """
+    fig, ax = plt.subplots(figsize=figsize)
+    
+    epochs = range(1, len(history.get('train_accuracy', [])) + 1)
+    
+    if 'train_accuracy' in history:
+        ax.plot(epochs, history['train_accuracy'], 'b-', lw=2, label='Training Accuracy')
+    if 'val_accuracy' in history:
+        ax.plot(epochs, history['val_accuracy'], 'r-', lw=2, label='Validation Accuracy')
+    
+    ax.set_xlabel('Epoch', fontsize=12)
+    ax.set_ylabel('Accuracy', fontsize=12)
+    ax.set_title(title, fontsize=14, fontweight='bold')
+    ax.legend(loc='lower right', fontsize=10)
+    ax.grid(True, alpha=0.3)
+    ax.set_ylim([0, 1.05])
+    
+    plt.tight_layout()
+    
+    if save_path:
+        save_path = Path(save_path)
+        save_path.parent.mkdir(parents=True, exist_ok=True)
+        fig.savefig(save_path, dpi=150, bbox_inches='tight')
+        logger.info(f"Accuracy curve plot saved to {save_path}")
+    
+    return fig
+
+
+def plot_loss_curve(
+    history: Dict[str, List[float]],
+    title: str = "Model Loss",
+    save_path: Optional[Union[str, Path]] = None,
+    figsize: Tuple[int, int] = (10, 6)
+) -> plt.Figure:
+    """
+    Plot training and validation loss curves.
+    
+    Args:
+        history: Dictionary with 'train_loss' and 'val_loss' lists.
+        title: Plot title.
+        save_path: Path to save the figure.
+        figsize: Figure size.
+        
+    Returns:
+        matplotlib Figure object.
+        
+    Example:
+        >>> history = {'train_loss': [0.5, 0.3, 0.2], 'val_loss': [0.52, 0.32, 0.22]}
+        >>> plot_loss_curve(history)
+    """
+    fig, ax = plt.subplots(figsize=figsize)
+    
+    epochs = range(1, len(history.get('train_loss', [])) + 1)
+    
+    if 'train_loss' in history:
+        ax.plot(epochs, history['train_loss'], 'b-', lw=2, label='Training Loss')
+    if 'val_loss' in history:
+        ax.plot(epochs, history['val_loss'], 'r-', lw=2, label='Validation Loss')
+    
+    ax.set_xlabel('Epoch', fontsize=12)
+    ax.set_ylabel('Loss', fontsize=12)
+    ax.set_title(title, fontsize=14, fontweight='bold')
+    ax.legend(loc='upper right', fontsize=10)
+    ax.grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    
+    if save_path:
+        save_path = Path(save_path)
+        save_path.parent.mkdir(parents=True, exist_ok=True)
+        fig.savefig(save_path, dpi=150, bbox_inches='tight')
+        logger.info(f"Loss curve plot saved to {save_path}")
+    
+    return fig
+
+
+def plot_data_distribution(
+    data: pd.DataFrame,
+    label_column: str = 'label',
+    title: str = "Data Distribution",
+    save_path: Optional[Union[str, Path]] = None,
+    figsize: Tuple[int, int] = (12, 6)
+) -> plt.Figure:
+    """
+    Plot distribution of data across classes - shows only class distribution pie chart and class count bar chart.
+    
+    Args:
+        data: Pandas DataFrame containing the data.
+        label_column: Name of the label column.
+        title: Plot title.
+        save_path: Path to save the figure.
+        figsize: Figure size.
+        
+    Returns:
+        matplotlib Figure object.
+        
+    Example:
+        >>> df = pd.read_csv('data/labeled_dataset.csv')
+        >>> plot_data_distribution(df, label_column='label')
+    """
+    fig, axes = plt.subplots(1, 2, figsize=figsize)
+    fig.suptitle(title, fontsize=16, fontweight='bold')
+    
+    # 1. Class distribution (pie chart)
+    if label_column in data.columns:
+        class_counts = data[label_column].value_counts()
+        colors = ['#2ecc71', '#e74c3c']  # Green for 0, Red for 1
+        labels = ['Real (0)', 'Fake (1)']
+        
+        wedges, texts, autotexts = axes[0].pie(class_counts, labels=labels, autopct='%1.1f%%', 
+                       colors=colors[:len(class_counts)], startangle=90)
+        
+        # Make percentage text more readable
+        for autotext in autotexts:
+            autotext.set_color('white')
+            autotext.set_fontsize(11)
+            autotext.set_fontweight('bold')
+        
+        axes[0].set_title('Class Distribution (Percentage)', fontsize=13, fontweight='bold')
+    
+    # 2. Class distribution (bar chart)
+    if label_column in data.columns:
+        class_counts = data[label_column].value_counts()
+        bars = axes[1].bar(['Real (0)', 'Fake (1)'][:len(class_counts)], class_counts, 
+                       color=['#2ecc71', '#e74c3c'][:len(class_counts)], edgecolor='black', linewidth=1.5)
+        axes[1].set_ylabel('Count', fontsize=12, fontweight='bold')
+        axes[1].set_title('Class Count (Absolute)', fontsize=13, fontweight='bold')
+        axes[1].grid(True, alpha=0.3, axis='y')
+        
+        # Add count labels on bars
+        for i, (bar, v) in enumerate(zip(bars, class_counts)):
+            axes[1].text(bar.get_x() + bar.get_width()/2, v + 100, str(v), 
+                        ha='center', fontsize=12, fontweight='bold')
+    
+    plt.tight_layout()
+    
+    if save_path:
+        save_path = Path(save_path)
+        save_path.parent.mkdir(parents=True, exist_ok=True)
+        fig.savefig(save_path, dpi=150, bbox_inches='tight')
+        logger.info(f"Data distribution plot saved to {save_path}")
+    
+    return fig
+
+
+def generate_5_plots(
+    y_true: np.ndarray,
+    y_pred: np.ndarray,
+    y_proba: np.ndarray,
+    data: Optional[pd.DataFrame] = None,
+    history: Optional[Dict[str, List[float]]] = None,
+    model_name: str = "Model",
+    output_dir: Optional[Union[str, Path]] = None,
+    show_plots: bool = False
+) -> Dict[str, plt.Figure]:
+    """
+    Generate all 5 required plots: Accuracy, Loss, Confusion Matrix, ROC Curve, Data Distribution.
+    
+    Args:
+        y_true: True labels.
+        y_pred: Predicted labels.
+        y_proba: Predicted probabilities for the positive class.
+        data: Dataset for distribution plot.
+        history: Training history with accuracy and loss.
+        model_name: Name of the model.
+        output_dir: Directory to save plots.
+        show_plots: Whether to display plots.
+        
+    Returns:
+        Dictionary mapping plot names to Figure objects.
+        
+    Example:
+        >>> figs = generate_5_plots(
+        ...     y_test, y_pred, y_proba,
+        ...     data=df_train,
+        ...     history={'train_accuracy': [...], 'val_accuracy': [...], ...},
+        ...     model_name='RandomForest',
+        ...     output_dir='docs/figures'
+        ... )
+    """
+    if output_dir is None:
+        output_dir = DEFAULT_FIGURES_DIR
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    
+    figures = {}
+    
+    # 1. Accuracy Curve
+    if history and 'train_accuracy' in history:
+        logger.info("Creating accuracy curve plot...")
+        figures['accuracy_curve'] = plot_accuracy_curve(
+            history,
+            title="Accuracy Curve",
+            save_path=output_dir / f"{model_name.lower()}_accuracy_curve.png"
+        )
+    
+    # 2. Loss Curve
+    if history and 'train_loss' in history:
+        logger.info("Creating loss curve plot...")
+        figures['loss_curve'] = plot_loss_curve(
+            history,
+            title="Loss Curve",
+            save_path=output_dir / f"{model_name.lower()}_loss_curve.png"
+        )
+    
+    # 3. Confusion Matrix
+    logger.info("Creating confusion matrix plot...")
+    figures['confusion_matrix'] = plot_confusion_matrix(
+        y_true, y_pred,
+        title="Confusion Matrix",
+        save_path=output_dir / f"{model_name.lower()}_confusion_matrix.png"
+    )
+    
+    # 4. ROC Curve
+    logger.info("Creating ROC curve plot...")
+    figures['roc_curve'] = plot_roc_curve(
+        y_true, y_proba,
+        title="ROC Curve",
+        save_path=output_dir / f"{model_name.lower()}_roc_curve.png"
+    )
+    
+    # 5. Data Distribution
+    if data is not None:
+        logger.info("Creating data distribution plot...")
+        figures['data_distribution'] = plot_data_distribution(
+            data,
+            title="Data Distribution",
+            save_path=output_dir / f"{model_name.lower()}_data_distribution.png"
+        )
+    
+    if show_plots:
+        plt.show()
+    else:
+        plt.close('all')
+    
+    logger.info(f"All 5 plots saved to {output_dir}")
+    return figures
