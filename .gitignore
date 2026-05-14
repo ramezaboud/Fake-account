@@ -97,7 +97,6 @@ data/*.csv
 !data/labeled_dataset_new.csv
 
 # Model files
-models/*.joblib
 models/*.pkl
 models/*.h5
 models/*.json
