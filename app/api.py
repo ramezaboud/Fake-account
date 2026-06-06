@@ -122,26 +122,61 @@ def user_to_dataframe(user: UserProfile) -> pd.DataFrame:
     }])
 
 
+def apply_business_rules(p_fake: float, user: UserProfile, decision_threshold: float):
+    """
+    Override model prediction for known edge cases.
+    
+    Rules:
+    - Verified + 100K+ followers → Real (مهما قال الموديل)
+    - Verified بس → قلل الـ fake score بـ 50%
+    
+    Returns: (label, adjusted_p_fake)
+    """
+    followers = user.followers_count or 0
+    verified = bool(user.verified)
+
+    # Rule 1: Verified influencer → Real مهما كان الموديل
+    if verified and followers > 100_000:
+        logger.info(f"Business rule applied: verified_influencer ({followers} followers)")
+        adjusted_p_fake = min(p_fake, 0.20)
+        return "Real", adjusted_p_fake
+
+    # Rule 2: Verified بس → خفف الـ score
+    if verified:
+        logger.info(f"Business rule applied: verified_account, p_fake reduced from {p_fake:.3f}")
+        p_fake = p_fake * 0.5
+
+    label = "fake" if p_fake >= decision_threshold else "Real"
+    return label, p_fake
+
+
 @app.post("/predict", response_model=PredictionResponse, tags=["Prediction"])
-async def predict(request: PredictionRequest, decision_threshold: float = Query(0.445, ge=0.0, le=1.0, description="Decision threshold for classifying as fake (probability >= threshold)")):
+async def predict(
+    request: PredictionRequest,
+    decision_threshold: float = Query(
+        0.55,
+        ge=0.0,
+        le=1.0,
+        description="Decision threshold for classifying as fake (probability >= threshold)"
+    )
+):
     """Predict if a single user account is fake or Real."""
     if model is None:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Model not loaded. Please try again later."
         )
-    
+
     try:
         df = user_to_dataframe(request.user)
         probas = model.predict_proba(df)[0]
 
-        # Determine prediction using the provided decision threshold on p(fake)
         p_fake = float(probas[1])
-        prediction = 1 if p_fake >= decision_threshold else 0
 
-        # Note: In the dataset, label 0 = Real/real, label 1 = fake
-        label = "fake" if prediction == 1 else "Real"
-        confidence = float(max(probas))
+        # Apply business rules (verified accounts override)
+        label, p_fake = apply_business_rules(p_fake, request.user, decision_threshold)
+
+        confidence = p_fake if label == "fake" else 1 - p_fake
 
         return PredictionResponse(
             prediction=label,
@@ -156,36 +191,44 @@ async def predict(request: PredictionRequest, decision_threshold: float = Query(
 
 
 @app.post("/predict/batch", response_model=BatchPredictionResponse, tags=["Prediction"])
-async def predict_batch(request: BatchPredictionRequest, decision_threshold: float = Query(0.445, ge=0.0, le=1.0, description="Decision threshold for classifying as fake (probability >= threshold)")):
+async def predict_batch(
+    request: BatchPredictionRequest,
+    decision_threshold: float = Query(
+        0.55,
+        ge=0.0,
+        le=1.0,
+        description="Decision threshold for classifying as fake (probability >= threshold)"
+    )
+):
     """Predict if multiple user accounts are fake or Real."""
     if model is None:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Model not loaded. Please try again later."
         )
-    
+
     try:
         predictions = []
-        
+
         for user in request.users:
             df = user_to_dataframe(user)
             probas = model.predict_proba(df)[0]
 
-            # use decision_threshold on p(fake)
             p_fake = float(probas[1])
-            pred = 1 if p_fake >= decision_threshold else 0
 
-            label = "fake" if pred == 1 else "Real"
-            confidence = float(max(probas))
+            # Apply business rules
+            label, p_fake = apply_business_rules(p_fake, user, decision_threshold)
+
+            confidence = p_fake if label == "fake" else 1 - p_fake
 
             predictions.append(PredictionResponse(
                 prediction=label,
                 confidence=round(confidence * 100, 2)
             ))
-        
+
         fake_count = sum(1 for p in predictions if p.prediction == "fake")
         real_count = len(predictions) - fake_count
-        
+
         return BatchPredictionResponse(
             predictions=predictions,
             total=len(predictions),
@@ -208,19 +251,19 @@ async def model_info():
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Model not loaded"
         )
-    
+
     info = {
         "type": type(model).__name__,
         "steps": [],
     }
-    
+
     if hasattr(model, "steps"):
         info["steps"] = [
             {"name": name, "type": type(step).__name__}
             for name, step in model.steps
         ]
-    
+
     if hasattr(model, "feature_names_in_"):
         info["features"] = list(model.feature_names_in_)
-    
+
     return info
